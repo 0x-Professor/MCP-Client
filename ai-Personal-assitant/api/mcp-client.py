@@ -41,10 +41,17 @@ async def connect_to_server(self, server_script_path: str):
             args=[server_script_path],
             env = None
             )
-
+        self.exit_stack = await self._stack.enter_async_context(
+            AsyncExitStack()
+            )
+        self.session = await self.exit_stack.enter_async_context(
+            self._client.connect(server_params)
+            )
+        return self.session
     except Exception as e:
         print(f"Error connecting to server: {e}")
-            
+        return None
+    
         
             
 
