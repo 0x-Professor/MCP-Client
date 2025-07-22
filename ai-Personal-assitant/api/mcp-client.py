@@ -29,5 +29,23 @@ class MCPClient:
 
 #connect to the MCP Server
 
+async def connect_to_server(self, server_script_path: str):
+    try: 
+        is_python = server_script_path.endswith(".py")
+        is_js = server_script_path.endswith(".js")
+        if not is_python or not is_js:
+            raise ValueError("Server script must be a Python or JavaScript file")
+        command  = "Python" if is_python else "node"
+        server_params = StdioServerParameters(
+            command=command,
+            args=[server_script_path],
+            env = None
+            )
+
+    except Exception as e:
+        print(f"Error connecting to server: {e}")
+            
+        
+            
 
 
